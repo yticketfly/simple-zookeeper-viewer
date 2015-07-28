@@ -1,10 +1,12 @@
 import json
+import os
+
 from flask import Flask, render_template, g, jsonify, request
 from kazoo.client import KazooClient
 app = Flask(__name__)
 
 # Host string of the ZooKeeper servers to connect to
-ZK_HOSTS = '127.0.0.1:2181'
+ZK_HOSTS = os.environ.get("ZK_HOSTS", "127.0.0.1:2181")
 
 # Node metadata to view
 ZNODESTAT_ATTR = [
@@ -81,13 +83,13 @@ def parse_data(raw_data):
 
 if __name__ == '__main__':
     import sys
-    host = '127.0.0.1'
-    port = 5000
+    webhost = '127.0.0.1'
+    webport = 5000
     if len(sys.argv) > 1:
-        host = sys.argv[1]
+        webhost = sys.argv[1]
     if len(sys.argv) > 2:
-        port = int(sys.argv[2])
+        webport = int(sys.argv[2])
 
-    app.run(host=host, port=port, debug=True)
+    app.run(host=webhost, port=webport, debug=True)
 
 
